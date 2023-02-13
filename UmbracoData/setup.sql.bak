@@ -1,0 +1,15 @@
+USE [master]
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'MyUmbracoAppOnDockerData')
+BEGIN
+
+    CREATE DATABASE [MyUmbracoAppOnDockerData] ON 
+    ( FILENAME = N'/var/opt/sqlserver/MyUmbracoAppOnDockerData.mdf' ),
+    ( FILENAME = N'/var/opt/sqlserver/MyUmbracoAppOnDockerData_log.ldf' )
+    FOR ATTACH
+
+END;
+GO
+
+USE MyUmbracoAppOnDockerData;

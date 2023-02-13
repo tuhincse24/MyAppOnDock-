@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/mssql/server:2019-GDR1-ubuntu-16.04
+
+ENV ACCEPT_EULA=Y
+ENV SA_PASSWORD=Abcd!234
+ENV MSSQL_PID=Express
+
+USER root
+
+RUN mkdir /var/opt/sqlserver
+
+RUN chown mssql /var/opt/sqlserver
+
+ENV MSSQL_BACKUP_DIR="/var/opt/sqlserver"
+ENV MSSQL_DATA_DIR="/var/opt/sqlserver"
+ENV MSSQL_LOG_DIR="/var/opt/sqlserver"
+
+COPY setup.sql /
+COPY startup.sh /
+
+COPY MyUmbracoAppOnDockerData.mdf /var/opt/sqlserver
+COPY MyUmbracoAppOnDockerData_log.ldf /var/opt/sqlserver
+
+ENTRYPOINT [ "/bin/bash", "startup.sh" ]
+CMD [ "/opt/mssql/bin/sqlservr" ]
